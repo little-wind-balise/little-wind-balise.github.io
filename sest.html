@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html class="police">
+<head>
+    <!--en-tete de page-->
+    
+    <meta charset="utf-8" />
+
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <title>Little wind Balise</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/waziup-js@2.0.0-alpha.10/lib/Waziup.js"></script>
+    <script>
+        Waziup.ApiClient.instance.basePath = "https://api.waziup.io/api/v2";
+        var api = new Waziup.SensorsApi();
+        api
+        .getSensor("nicolasdupont", "windspeed")
+        .then(sens => {
+            document.getElementById("wind_speed").innerHTML =
+            "vitesse vent=: " + sens.value.value + " km/h";
+        });
+        api
+        .getSensor("nicolasdupont", "windirection")
+        .then(sens => {
+            document.getElementById("wind_direction").innerHTML =
+            "direction vent=: " + sens.value.value + " °";
+        });
+    </script>
+   
+
+
+
+</head>
+
+<body>
+
+    <header>
+        <h1> <em> LITTLE Wind  Balise </em>  <br />Bienvenue</h1>
+    </header>
+    
+    <p class="picture">
+        <br />
+        <img src="image/prototype Version B1.jpg" class="imageflottante" alt="Photo de balise" />
+    </p>
+
+    <p class="dessous">
+        Voici le premier prototype LITTLE Wind
+    </p>
+
+    <section>
+      <!--données balise-->
+
+      <h2> Dernière données de la balise <span class="introduction">  #1</span> </h2>
+
+
+
+
+
+      
+        <div id="wind_speed" style="color:red">
+            Loading...
+        </div>
+        <div id="wind_direction" style="color:red">
+            Loading...
+        </div>
+      
+    
+    <canvas id="windspeed"  width="1000" height="300"></canvas>
+    <canvas id="windirection"  width="1000" height="300"></canvas>
+ <script>
+      Waziup.ApiClient.instance.basePath = "https://api.waziup.io/api/v2";
+      var api = new Waziup.SensorsApi();
+      var data = [];
+      var labels = [];
+      
+      api
+        .getSensorsData({
+          device_id: "nicolasdupont",
+          sensor_id: "windspeed",
+          limit: 2000,
+          date_from:"2021-08-01T00:00:00.000Z"
+        })
+        .then(values => {
+          console.log("data" + JSON.stringify(values));
+          for (value of values) {
+            data.push(value.value);
+            labels.push(value.date_received);
+          }
+          var ctx = document.getElementById("windspeed").getContext("2d");
+          var mychart = new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                   
+                  label:           "Evolution de la vitesse du vent",
+                  backgroundColor: 'rgba(255, 99, 132, 0.3)',
+                  borderColor:     'rgba(255, 0, 132, 1)',
+                  
+                  data: data
+                }
+              ]
+            },
+            options: {
+              responsive: false
+              
+            }
+          });
+        });
+    </script>
+  
+
+
+
+  
+<script>
+     
+      
+      api
+        .getSensorsData({
+          device_id: "nicolasdupont",
+          sensor_id: "windirection",
+          limit: 2000,
+          date_from:"2021-08-01T00:00:00.000Z"
+        })
+        .then(values => {
+          console.log("data" + JSON.stringify(values));
+          for (value of values) {
+            data.push(value.value);
+            labels.push(value.date_received);
+          }
+          var ctx = document.getElementById("windirection").getContext("2d");
+          var mychart = new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                   
+                  label:           "Evolution de la direction du vent",
+                  backgroundColor: 'rgba(255, 99, 132, 0.3)',
+                  borderColor:     'rgba(255, 0, 132, 1)',
+                  
+                  data: data
+                }
+              ]
+            },
+            options: {
+              responsive: false
+              
+            }
+          });
+        });
+    </script>
+
+
+
+
+
+</body>
+
+
+</html>
+
+
+

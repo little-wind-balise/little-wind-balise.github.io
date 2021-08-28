@@ -1,0 +1,50 @@
+/*
+style.css
+---------
+Par Nicolas Dupont
+*/
+
+.introduction
+{
+    color: red;
+}
+
+em
+{
+    color:blue;
+     font-size: 1.5em;
+}
+
+.police
+{
+    font-family: Arial;
+}
+.picture
+{
+    text-align: center;
+}
+
+.imageflottante
+{
+    float: right;
+}
+
+h1, .picture
+{
+    text-align: center;
+}
+
+.dessous
+{
+    clear: both;
+    text-align: right;
+}
+
+body
+{
+	padding-right: 30%;
+}
+body
+{
+	padding-left: 30%;
+}
