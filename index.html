@@ -17,13 +17,13 @@
         .getSensor("nicolasdupont", "windspeed")
         .then(sens => {
             document.getElementById("wind_speed").innerHTML =
-            "vitesse vent=: " + sens.value.value + " km/h";
+            "vitesse =: " + sens.value.value + " km/h";
         });
         api
         .getSensor("nicolasdupont", "windirection")
         .then(sens => {
             document.getElementById("wind_direction").innerHTML =
-            "direction vent=: " + sens.value.value + " °";
+            "direction =: " + sens.value.value + " °";
         });
     </script>
    
@@ -64,16 +64,20 @@
             Loading...
         </div>
       
-    
+<p class="graph">
+   
+
     <canvas id="windspeed"  width="1000" height="300"></canvas>
     <canvas id="windirection"  width="1000" height="300"></canvas>
+
+
  <script>
       Waziup.ApiClient.instance.basePath = "https://api.waziup.io/api/v2";
       var api = new Waziup.SensorsApi();
-      var data = [];
-      var labels = [];
+      var datawindspeed = [];
+      var labelswindspeed = [];
       
-      api
+     api
         .getSensorsData({
           device_id: "nicolasdupont",
           sensor_id: "windspeed",
@@ -83,40 +87,34 @@
         .then(values => {
           console.log("data" + JSON.stringify(values));
           for (value of values) {
-            data.push(value.value);
-            labels.push(value.date_received);
+            datawindspeed.push(value.value);
+            labelswindspeed.push(value.date_received);
           }
           var ctx = document.getElementById("windspeed").getContext("2d");
-          var mychart = new Chart(ctx, {
+          var windspeed = new Chart(ctx, {
             type: "line",
             data: {
-              labels: labels,
+              labels: labelswindspeed,
               datasets: [
                 {
-                   
+                  
                   label:           "Evolution de la vitesse du vent",
                   backgroundColor: 'rgba(255, 99, 132, 0.3)',
                   borderColor:     'rgba(255, 0, 132, 1)',
                   
-                  data: data
+                  data: datawindspeed
                 }
               ]
             },
             options: {
-              responsive: true
+              responsive: false
               
             }
           });
         });
-    </script>
-  
-
-
-
-  
-<script>
-     
-      
+        
+        var datawindirection = [];
+        var labelswindirection = [];
       api
         .getSensorsData({
           device_id: "nicolasdupont",
@@ -127,41 +125,44 @@
         .then(values => {
           console.log("data" + JSON.stringify(values));
           for (value of values) {
-            data.push(value.value);
-            labels.push(value.date_received);
+            datawindirection.push(value.value);
+            labelswindirection.push(value.date_received);
+          
           }
           var ctx = document.getElementById("windirection").getContext("2d");
-          var mychart = new Chart(ctx, {
+          var windirection = new Chart(ctx, {
+           
             type: "line",
             data: {
-              labels: labels,
+              labels: labelswindirection,
               datasets: [
                 {
                    
                   label:           "Evolution de la direction du vent",
                   backgroundColor: 'rgba(255, 99, 132, 0.3)',
                   borderColor:     'rgba(255, 0, 132, 1)',
-                  
-                  data: data
+                 
+                  data: datawindirection
                 }
               ]
             },
             options: {
-              responsive: true
+              responsive: false
               
             }
+
           });
-        });
-    </script>
-
-
-
-
+        }); 
+ </script>
+ </p> 
 
 </body>
 
 
 </html>
+
+
+
 
 
 
